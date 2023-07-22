@@ -10,6 +10,12 @@ class Service extends Model
     use HasFactory;
 
     protected $fillable = [
-        'name'
+        'name',
+        'consultation_hours'
     ];
+
+    public function appointments()
+    {
+        return $this->belongsToMany(Appointment::class, 'appointment_services');
+    }
 }

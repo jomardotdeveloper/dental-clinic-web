@@ -24,6 +24,7 @@ return new class extends Migration
             $table->boolean('is_staff')->default(false);
             $table->string('address')->nullable();
             $table->date('birthdate')->nullable();
+            $table->string('dentist_availabilities')->nullable();
             $table->timestamps();
         });
     }
