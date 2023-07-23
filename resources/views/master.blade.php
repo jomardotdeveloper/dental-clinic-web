@@ -91,7 +91,7 @@
 
                                         </small>
 									</div>
-                                    <img src="https://www.hunterdonhealth.org/themes/custom/ohana/dist/img/default-doctor.png" width="20" alt=""/>
+                                    <img src="{{ asset('default-doctor.png') }}" width="20" alt=""/>
                                 </a>
                                 <div class="dropdown-menu dropdown-menu-right">
                                     {{-- <a href="./app-profile.html" class="dropdown-item ai-icon">
