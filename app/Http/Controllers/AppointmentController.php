@@ -16,9 +16,20 @@ class AppointmentController extends Controller
      */
     public function index()
     {
+        $appointments = Appointment::all();
+
+        if(auth()->user()->contact->is_patient)
+        {
+            $appointments = Appointment::where('patient_id', auth()->user()->id)->get();
+        }
+        else if(auth()->user()->contact->is_dentist)
+        {
+            $appointments = Appointment::where('dentist_id', auth()->user()->id)->get();
+        }
+
         return view('appointments.index', [
             'title' => 'Appointments',
-            'appointments' => Appointment::all()
+            'appointments' => $appointments
         ]);
     }
 
@@ -103,5 +114,19 @@ class AppointmentController extends Controller
     {
         $appointment->delete();
         return redirect()->route('appointments.index')->with(['success'=> ['Appointment deleted successfully.']]);
+    }
+
+    public function cancel($id) {
+        $appointment = Appointment::findOrFail($id);
+        $appointment->status = Appointment::STATUS_CANCELLED;
+        $appointment->save();
+        return redirect()->route('web-queue')->with(['success'=> ['Appointment cancelled successfully.']]);
+    }
+
+    public function complete($id) {
+        $appointment = Appointment::findOrFail($id);
+        $appointment->status = Appointment::STATUS_COMPLETED;
+        $appointment->save();
+        return redirect()->route('web-queue')->with(['success'=> ['Appointment completed successfully.']]);
     }
 }

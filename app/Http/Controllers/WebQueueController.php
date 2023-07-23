@@ -5,14 +5,14 @@ namespace App\Http\Controllers;
 use App\Models\Appointment;
 use Illuminate\Http\Request;
 
-class QueueController extends Controller
+class WebQueueController extends Controller
 {
     public function index()
     {
         $appointment = $this->getFirstInQueue();
-        return view('end.queue', compact('appointment'));
+        $title = "Queue";
+        return view('queue', compact('appointment', 'title'));
     }
-
     public function getFirstInQueue()
     {
         $appointment = null;
@@ -38,5 +38,4 @@ class QueueController extends Controller
 
         return $appointment;
     }
-    
 }

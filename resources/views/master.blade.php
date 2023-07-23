@@ -124,11 +124,7 @@
                             <span class="nav-text">Dashboard</span>
                         </a>
                     </li>
-                    <li><a href="{{ route('contacts.index') }}?is_patient=1" class="ai-icon" aria-expanded="false">
-                            <i class="flaticon-381-user"></i>
-                            <span class="nav-text">Patients</span>
-                        </a>
-                    </li>
+                    @if (auth()->user()->contact->is_admin)
                     <li><a href="{{ route('contacts.index') }}?is_dentist=1" class="ai-icon" aria-expanded="false">
                             <i class="fa fa-stethoscope"></i>
                             <span class="nav-text">Dentists</span>
@@ -139,6 +135,14 @@
                             <span class="nav-text">Staffs</span>
                         </a>
                     </li>
+                    @endif
+                    
+                    <li><a href="{{ route('contacts.index') }}?is_patient=1" class="ai-icon" aria-expanded="false">
+                            <i class="flaticon-381-user"></i>
+                            <span class="nav-text">Patients</span>
+                        </a>
+                    </li>
+                
                     <li><a href="{{ route('services.index') }}" class="ai-icon" aria-expanded="false">
                             <i class="fa fa-briefcase"></i>
                             <span class="nav-text">Services</span>
@@ -152,6 +156,11 @@
                     <li><a href="{{ route('appointments.index') }}" class="ai-icon" aria-expanded="false">
                             <i class="flaticon-381-notepad"></i>
                             <span class="nav-text">Appointments</span>
+                        </a>
+                    </li>
+                    <li><a href="{{ route('web-queue') }}" class="ai-icon" aria-expanded="false">
+                            <i class="flaticon-381-notepad"></i>
+                            <span class="nav-text">Todays Appointments</span>
                         </a>
                     </li>
                     <li><a href="{{ route('payments.index') }}" class="ai-icon" aria-expanded="false">

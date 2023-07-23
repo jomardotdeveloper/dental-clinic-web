@@ -13,6 +13,7 @@ use App\Http\Controllers\PaymentController;
 use App\Http\Controllers\QueueController;
 use App\Http\Controllers\ScheduleController;
 use App\Http\Controllers\ServiceController;
+use App\Http\Controllers\WebQueueController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -62,6 +63,11 @@ Route::prefix("/admin")->middleware('auth')->group(function () {
     Route::resource('services', ServiceController::class);
     Route::resource('schedules', ScheduleController::class);
     Route::resource('appointments', AppointmentController::class);
+    Route::get('appointments/complete/{id}', [AppointmentController::class, 'complete'])->name('appointments.complete');
+    Route::get('appointments/cancel/{id}', [AppointmentController::class, 'cancel'])->name('appointments.cancel');
+
+    Route::get('web-queue', [WebQueueController::class, 'index'])->name('web-queue');
+
     Route::resource('payments', PaymentController::class);
 });
 
