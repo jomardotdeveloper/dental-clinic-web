@@ -61,6 +61,18 @@
                                 @csrf
                                 @method('DELETE')
                                 <button type="submit" class="btn btn-danger">Delete</button>
+                                @if ($appointment->approval_status == 1)
+                                    <a
+                                        href="{{ route('appointments.approve', $appointment) }}"
+                                        class="btn btn-success ">
+                                        Approve Appointment
+                                    </a>
+                                    <a
+                                        href="{{ route('appointments.reject', $appointment) }}"
+                                        class="btn btn-warning ">
+                                        Reject Appointment
+                                    </a>
+                                @endif
                             </form>
                         </div>
                     </div>

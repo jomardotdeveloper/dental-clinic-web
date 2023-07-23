@@ -129,4 +129,18 @@ class AppointmentController extends Controller
         $appointment->save();
         return redirect()->route('web-queue')->with(['success'=> ['Appointment completed successfully.']]);
     }
+
+    public function approve($id) {
+        $appointment = Appointment::findOrFail($id);
+        $appointment->approval_status = Appointment::APPROVAL_APPROVED;
+        $appointment->save();
+        return redirect()->route('appointments.index')->with(['success'=> ['Appointment approved successfully.']]);
+    }
+
+    public function reject($id) {
+        $appointment = Appointment::findOrFail($id);
+        $appointment->approval_status = Appointment::APPROVAL_REJECTED;
+        $appointment->save();
+        return redirect()->route('appointments.index')->with(['success'=> ['Appointment rejected successfully.']]);
+    }
 }

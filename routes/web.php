@@ -63,6 +63,8 @@ Route::prefix("/admin")->middleware('auth')->group(function () {
     Route::resource('services', ServiceController::class);
     Route::resource('schedules', ScheduleController::class);
     Route::resource('appointments', AppointmentController::class);
+    Route::get('appointments/approve/{id}', [AppointmentController::class, 'approve'])->name('appointments.approve');
+    Route::get('appointments/reject/{id}', [AppointmentController::class, 'reject'])->name('appointments.reject');
     Route::get('appointments/complete/{id}', [AppointmentController::class, 'complete'])->name('appointments.complete');
     Route::get('appointments/cancel/{id}', [AppointmentController::class, 'cancel'])->name('appointments.cancel');
 
