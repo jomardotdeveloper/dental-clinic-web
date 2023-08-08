@@ -25,9 +25,23 @@ class QueueController extends Controller
         // Appointment with approved status and low priority
         $lowAppointments = Appointment::where('approval_status', Appointment::APPROVAL_APPROVED)->where('priority_level', Appointment::PRIORITY_LOW)->where('status',  Appointment::STATUS_ONGOING)->orWhere('status', Appointment::STATUS_PENDING)->get();
 
-        $allAppointments = $highAppointments->merge($normalAppointments)->merge($lowAppointments);
+        $allAppointments = [];
+        // $allAppointments = $highAppointments->merge($normalAppointments)->merge($lowAppointments);
+        // dd($lowAppointments);
+        // dd("JOMAR");
+        foreach($highAppointments as $appointmentS) {
+            $allAppointments[] = $appointmentS;
+        }
 
-        if($allAppointments->count() > 0)
+        foreach($normalAppointments as $appointmentS) {
+            $allAppointments[] = $appointmentS;
+        }
+
+        foreach($lowAppointments as $appointmentS) {
+            $allAppointments[] = $appointmentS;
+        }
+
+        if(count($allAppointments) > 0)
         {
             $appointment = $allAppointments->first();
             $appointment->status = Appointment::STATUS_ONGOING;
@@ -38,5 +52,5 @@ class QueueController extends Controller
 
         return $appointment;
     }
-    
+
 }

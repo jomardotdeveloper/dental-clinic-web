@@ -7,6 +7,7 @@ use App\Models\Appointment;
 use App\Models\Contact;
 use App\Models\Service;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Mail;
 
 class AppointmentController extends Controller
 {
@@ -100,6 +101,17 @@ class AppointmentController extends Controller
     {
         $apt = $this->updateAppointment($request, $appointment->id);
 
+        // CHECKING IF DATE IS DIFFERENT
+        $dateMessage = "Your appointment with Dr. " . $appointment->dentist->full_name . " has been rescheduled to " . $appointment->date;
+        if($request->input('date') != $appointment->date) {
+            Mail::raw($dateMessage, function ($message)  use ($appointment){
+                $message->from("dres.dentalclinic.13@gmail.com", "dres.dentalclinic.13@gmail.com");
+                $message->to($appointment->patient->user->email, 'Patient');
+            });
+        }
+
+
+
         if($apt["status"] == "failed") {
             return redirect()->back()->with(['error'=> $apt["error"]]);
         }
@@ -134,6 +146,11 @@ class AppointmentController extends Controller
         $appointment = Appointment::findOrFail($id);
         $appointment->approval_status = Appointment::APPROVAL_APPROVED;
         $appointment->save();
+        $apmessage = "Your appointment with Dr. " . $appointment->dentist->full_name . " has been approved.";
+        Mail::raw($apmessage, function ($message) use ($appointment) {
+            $message->from("dres.dentalclinic.13@gmail.com", "dres.dentalclinic.13@gmail.com");
+            $message->to($appointment->patient->user->email, 'Patient');
+        });
         return redirect()->route('appointments.index')->with(['success'=> ['Appointment approved successfully.']]);
     }
 
@@ -141,6 +158,11 @@ class AppointmentController extends Controller
         $appointment = Appointment::findOrFail($id);
         $appointment->approval_status = Appointment::APPROVAL_REJECTED;
         $appointment->save();
+        $rjmessage = "Your appointment with Dr. " . $appointment->dentist->full_name . " has been rejected.";
+        Mail::raw($rjmessage, function ($message) use ($appointment){
+            $message->from("dres.dentalclinic.13@gmail.com", "dres.dentalclinic.13@gmail.com");
+            $message->to($appointment->patient->user->email, 'Patient');
+        });
         return redirect()->route('appointments.index')->with(['success'=> ['Appointment rejected successfully.']]);
     }
 }
